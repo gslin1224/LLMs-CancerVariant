@@ -1,6 +1,7 @@
 # 🧬 LLMs-CancerVariant: Benchmarking Large Language Models for Cancer Variant Classification
 
 ## 📄 Paper
+
 **Title**: Benchmarking large language models GPT-4o, Llama 3.1, and Qwen 2.5 for cancer genetic variant classification  
 **Journal**: *npj Precision Oncology*  
 **DOI**: [10.1038/s41698-025-00935-4](https://doi.org/10.1038/s41698-025-00935-4)  
@@ -10,29 +11,22 @@
 ---
 
 ## 🎯 Objective
-This project benchmarks GPT-4o, Llama 3.1, and Qwen 2.5 on cancer variant classification tasks using:
+
+This project benchmarks GPT-4o, Llama 3.1, and Qwen 2.5 for cancer variant classification using:
 
 - Public databases: **OncoKB**, **CIViC**
-- Real-world dataset: **FoundationOne CDx reports**
+- Real-world data: **FoundationOne CDx reports**
 
-The models were evaluated on:
+Evaluation tasks include:
+
 - Clinical relevance classification (Clinically Relevant vs VUS)
 - Evidence tier classification (e.g., OncoKB levels 1–4, R1/R2; CIViC A–E)
-- Response consistency across 100 iterations
-- Effects of **prompt design**, **model temperature**, and **RAG (Retrieval-Augmented Generation)**
+- Model consistency over 100 iterations
+- Prompt design effects
+- Temperature sensitivity
+- Retrieval-Augmented Generation (RAG)
 
----
-
-## 🗃️ Module Overview
-
-| File | Function |
-|------|----------|
-| `XXX_all_models.py` | Benchmarking 3 LLMs with basic prompts |
-| `XXX_details.py` | Evaluation using refined prompts |
-| `foundationone_rag.py` | Classification with RAG (retrieval-augmented generation) |
-| `foundationone_binary.py` | Binary classification: Clinically Relevant vs VUS |
-| `XXX_explain.py` | LLM reasoning trace for classification decisions |
-| `onco_temperature.py` | Model stability under varying temperature settings |
+All prompt templates used in the experiments are available in the paper (see Supplementary Table 3).
 
 ---
 
@@ -40,61 +34,49 @@ The models were evaluated on:
 
 | Dataset | GPT-4o | Llama 3.1 | Qwen 2.5 |
 |--------|--------|-----------|----------|
-| **FoundationOne** (VUS vs Relevant) | 0.7318 | 0.4976 | 0.5731 |
+| **FoundationOne** (Relevant vs VUS) | 0.7318 | 0.4976 | 0.5731 |
 | **OncoKB** (Top-1 tier) | 0.3393 | 0.3066 | 0.3328 |
 | **CIViC** (Top-1 tier) | 0.1865 | 0.1212 | 0.2485 |
 
-- **Prompt engineering** greatly improved performance
-- **RAG** increased accuracy for Qwen 2.5 from 0.5731 ➜ 0.6616 (FoundationOne)
-- Lower **temperature (0)** improved consistency and accuracy
-- GPT-4o was most aligned with **pathologist annotations**
-- All models tended to **over-classify** weaker evidence variants
+- GPT-4o was most aligned with expert annotations  
+- RAG boosted Qwen 2.5's accuracy from 0.5731 → 0.6616  
+- Refined prompts significantly improved classification accuracy  
+- Lower temperature improved both stability and accuracy  
+- All models tended to overclassify weak-evidence variants
 
 ---
 
-## 🧪 Dataset Info
+## 🧪 Dataset Summary
 
-- **FoundationOne CDx**: 10,506 variants (5,240 relevant, 5,266 VUS)
-- **OncoKB**: 625 annotated variant associations
-- **CIViC**: 4,426 variant-evidence entries
-
----
-
-## 📦 Dependencies & Setup
-
-- Python 3.10.12
-- Qwen 2.5 & Llama 3.1 via Ollama server + 4× NVIDIA A100
-- GPT-4o via Azure OpenAI API
-- Retrieval vectorization: [`nomic-embed-text`](https://arxiv.org/abs/2402.01613)
+- **FoundationOne CDx**: 10,506 variants (5,240 relevant, 5,266 VUS)  
+- **OncoKB**: 625 variant-evidence associations  
+- **CIViC**: 4,426 variant-evidence associations  
 
 ---
 
-## 🔍 Repository Structure
+## 💻 Script Overview
 
-```
-LLMs-CancerVariant/
-├── foundationone_rag.py
-├── foundationone_binary.py
-├── XXX_all_models.py
-├── XXX_details.py
-├── XXX_explain.py
-├── onco_temperature.py
-├── prompts/
-│   ├── basic/
-│   ├── refined/
-│   └── binary/
-├── data/
-│   ├── oncokb.csv
-│   ├── civic.tsv
-│   └── foundationone.json
-└── results/
-```
+- `XXX_all_models.py` - Tests the performance of three models on the respective database using basic prompts
+- `XXX_details.py` - Tests the performance of three models on the respective database using refined prompts
+- `foundationone_rag.py` - Conducts testing using RAG (Retrieval-Augmented Generation)
+- `foundationone_binary.py` - Tests performance using a binary classification system prompt
+- `XXX_explain.py` - Enables the model to explain its reasoning behind each answer
+- `onco_temperature.py` - Tests model performance with temperature set to 0
+
+---
+
+## 📦 Environment
+
+- Python 3.10.12  
+- GPT-4o (via Azure OpenAI, 2024-05-13 version)  
+- Qwen 2.5 & Llama 3.1 (via Ollama server, 4× NVIDIA A100)  
+- Vector embedding: [`nomic-embed-text`](https://arxiv.org/abs/2402.01613)
 
 ---
 
 ## 📜 Citation
 
-If you use this codebase or data, please cite:
+If you use this codebase or findings in your work, please cite:
 
 ```bibtex
 @article{lin2025llms,
